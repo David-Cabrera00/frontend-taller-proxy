@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import { MetricCard } from "../components/MetricCard";
 import { LogsSection } from "../components/LogsSection";
-import type { ApiResponse, ServiceSummary } from "../types";
 import { OperationsSection } from "../components/OperationsSection";
+import type { ApiResponse, ServiceSummary } from "../types";
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState<ServiceSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
   const [error, setError] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const loadSummary = async () => {
     try {
@@ -26,13 +27,17 @@ export default function DashboardPage() {
     }
   };
 
+  const triggerRefresh = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
+
   const simulateLoad = async () => {
     try {
       setSimulating(true);
       setError("");
 
       await api.post("/metrics/simulate-load");
-      await loadSummary();
+      triggerRefresh();
     } catch (err) {
       setError("No se pudo ejecutar la simulación de carga.");
       console.error(err);
@@ -43,14 +48,14 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadSummary();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="page">
       <div className="page-header">
         <div>
-          <h1>Dashboard de Monitoreo</h1>
-          <p>Resumen general de los microservicios.</p>
+          <h1>Panel de control del sistema</h1>
+          <p>Resumen general del comportamiento de inventario, pedidos y pagos.</p>
         </div>
 
         <button className="primary-button" onClick={simulateLoad} disabled={simulating}>
@@ -70,7 +75,7 @@ export default function DashboardPage() {
         <div className="summary-grid">
           {summary.map((item) => (
             <div key={item.serviceId} className="service-panel">
-              <h2>{item.serviceId}</h2>
+              <h2>{translateServiceName(item.serviceId)}</h2>
 
               <div className="cards-grid">
                 <MetricCard
@@ -99,8 +104,21 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <LogsSection />
-      <OperationsSection />
+      <LogsSection refreshKey={refreshKey} />
+      <OperationsSection onOperationCompleted={triggerRefresh} />
     </div>
   );
+}
+
+function translateServiceName(serviceId: string) {
+  switch (serviceId) {
+    case "inventory":
+      return "Inventario";
+    case "orders":
+      return "Pedidos";
+    case "payments":
+      return "Pagos";
+    default:
+      return serviceId;
+  }
 }

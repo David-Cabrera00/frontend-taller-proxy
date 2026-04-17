@@ -5,7 +5,7 @@ export default function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <h2>Centro de monitoreo</h2>
-        <p>Control de inventario, pedidos y pagos</p>
+        <p>Control operativo de inventario, pedidos y pagos</p>
       </aside>
 
       <main className="main-content">

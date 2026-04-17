@@ -2,7 +2,11 @@ import { useState } from "react";
 import { api } from "../api/client";
 import type { ApiResponse } from "../types";
 
-export function OperationsSection() {
+type OperationsSectionProps = {
+  onOperationCompleted: () => void;
+};
+
+export function OperationsSection({ onOperationCompleted }: OperationsSectionProps) {
   const [inventoryProductId, setInventoryProductId] = useState("P-100");
   const [inventoryQuantity, setInventoryQuantity] = useState(1);
 
@@ -17,20 +21,20 @@ export function OperationsSection() {
   const [error, setError] = useState("");
   const [loadingAction, setLoadingAction] = useState("");
 
-  const runAction = async (
-    actionKey: string,
-    request: () => Promise<any>
-  ) => {
+  const runAction = async (actionKey: string, request: () => Promise<any>) => {
     try {
       setLoadingAction(actionKey);
       setError("");
+
       const response = await request();
       setResult(response.data);
+      onOperationCompleted();
     } catch (err: any) {
       const backendMessage =
         err?.response?.data?.message ||
         err?.response?.data?.error ||
         "Ocurrió un error al ejecutar la operación.";
+
       setError(backendMessage);
       console.error(err);
     } finally {
@@ -43,7 +47,7 @@ export function OperationsSection() {
       <div className="section-header">
         <div>
           <h2>Panel de operaciones</h2>
-        <p>Ejecuta acciones reales sobre inventario, pedidos y pagos.</p>
+          <p>Ejecuta acciones reales sobre inventario, pedidos y pagos.</p>
         </div>
       </div>
 
@@ -51,7 +55,7 @@ export function OperationsSection() {
 
       <div className="operations-grid">
         <div className="operation-card">
-          <h3>Inventory</h3>
+          <h3>Gestión de inventario</h3>
 
           <div className="form-group">
             <label>Código del producto</label>
@@ -120,10 +124,10 @@ export function OperationsSection() {
         </div>
 
         <div className="operation-card">
-          <h3>Orders</h3>
+          <h3>Gestión de pedidos</h3>
 
           <div className="form-group">
-           <label>Cliente</label>
+            <label>Cliente</label>
             <input
               value={orderCustomer}
               onChange={(e) => setOrderCustomer(e.target.value)}
@@ -143,7 +147,7 @@ export function OperationsSection() {
           </div>
 
           <div className="form-group">
-            <label>Codigo del pedido</label>
+            <label>Código del pedido</label>
             <input
               value={orderId}
               onChange={(e) => setOrderId(e.target.value)}
@@ -185,7 +189,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "order-get" ? "Consultando..." : "Consultar orden"}
+              {loadingAction === "order-get" ? "Consultando..." : "Consultar pedido"}
             </button>
 
             <button
@@ -205,7 +209,7 @@ export function OperationsSection() {
         </div>
 
         <div className="operation-card">
-          <h3>Payments</h3>
+          <h3>Gestión de pagos</h3>
 
           <div className="form-group">
             <label>Monto</label>
@@ -219,7 +223,7 @@ export function OperationsSection() {
           </div>
 
           <div className="form-group">
-            <label>Codigo del pago</label>
+            <label>Código del pago</label>
             <input
               value={paymentId}
               onChange={(e) => setPaymentId(e.target.value)}
@@ -246,7 +250,7 @@ export function OperationsSection() {
                 })
               }
             >
-              {loadingAction === "payment-charge" ? "Cobrando..." : "Registar cobro"}
+              {loadingAction === "payment-charge" ? "Registrando..." : "Registrar cobro"}
             </button>
 
             <button
@@ -281,13 +285,18 @@ export function OperationsSection() {
       </div>
 
       <div className="result-panel">
-        <h3>Resultado de la operación</h3>
+        <h3>Resultado de la solicitud</h3>
 
         {result ? (
-          <pre>{JSON.stringify(result, null, 2)}</pre>
+          <div className="result-card">
+            <div className="result-card-header">
+              <span className="result-badge">Respuesta del sistema</span>
+            </div>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+          </div>
         ) : (
           <div className="empty-box">
-           Aquí se mostrará la respuesta del sistema cuando ejecutes una operación.
+            Aquí se mostrará la respuesta del sistema cuando ejecutes una operación.
           </div>
         )}
       </div>

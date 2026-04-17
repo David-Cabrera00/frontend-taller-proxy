@@ -4,7 +4,11 @@ import type { ApiResponse, AuditLog, PageResponse } from "../types";
 
 const PAGE_SIZE = 10;
 
-export function LogsSection() {
+type LogsSectionProps = {
+  refreshKey: number;
+};
+
+export function LogsSection({ refreshKey }: LogsSectionProps) {
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -39,7 +43,7 @@ export function LogsSection() {
       setPage(pageData.page);
       setTotalPages(pageData.totalPages);
     } catch (err) {
-      setError("No se pudieron cargar los logs.");
+      setError("No se pudieron cargar los registros.");
       console.error(err);
     } finally {
       setLoading(false);
@@ -48,8 +52,7 @@ export function LogsSection() {
 
   useEffect(() => {
     loadLogs(0, service, status);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [refreshKey]);
 
   const handleApplyFilters = async () => {
     await loadLogs(0, service, status);
@@ -71,8 +74,8 @@ export function LogsSection() {
     <section className="panel">
       <div className="section-header">
         <div>
-          <h2>Logs de Auditoría</h2>
-          <p>Registro de llamadas ejecutadas por los microservicios.</p>
+          <h2>Historial de operaciones</h2>
+          <p>Registro de solicitudes ejecutadas por el sistema.</p>
         </div>
 
         <button className="secondary-button" onClick={() => loadLogs(0, service, status)}>
@@ -89,9 +92,9 @@ export function LogsSection() {
             onChange={(e) => setService(e.target.value)}
           >
             <option value="">Todos</option>
-            <option value="inventory">Inventory</option>
-            <option value="orders">Orders</option>
-            <option value="payments">Payments</option>
+            <option value="inventory">Inventario</option>
+            <option value="orders">Pedidos</option>
+            <option value="payments">Pagos</option>
           </select>
         </div>
 
@@ -103,8 +106,8 @@ export function LogsSection() {
             onChange={(e) => setStatus(e.target.value)}
           >
             <option value="">Todos</option>
-            <option value="SUCCESS">SUCCESS</option>
-            <option value="ERROR">ERROR</option>
+            <option value="SUCCESS">Exitoso</option>
+            <option value="ERROR">Error</option>
           </select>
         </div>
 
@@ -118,9 +121,9 @@ export function LogsSection() {
       {error && <div className="alert error-alert">{error}</div>}
 
       {loading ? (
-        <div className="loading-box">Cargando logs...</div>
+        <div className="loading-box">Cargando registros...</div>
       ) : logs.length === 0 ? (
-        <div className="empty-box">No hay logs para los filtros seleccionados.</div>
+        <div className="empty-box">No hay registros para los filtros seleccionados.</div>
       ) : (
         <>
           <div className="table-wrapper">
@@ -132,15 +135,15 @@ export function LogsSection() {
                   <th>Operación</th>
                   <th>Duración</th>
                   <th>Estado</th>
-                  <th>Request ID</th>
+                  <th>ID de solicitud</th>
                 </tr>
               </thead>
               <tbody>
                 {logs.map((log) => (
                   <tr key={log.requestId}>
                     <td>{formatDate(log.timestamp)}</td>
-                    <td className="capitalize-cell">{log.serviceId}</td>
-                    <td>{log.operation}</td>
+                    <td className="capitalize-cell">{translateService(log.serviceId)}</td>
+                    <td>{translateOperation(log.operation)}</td>
                     <td>{log.durationMs} ms</td>
                     <td>
                       <span
@@ -148,7 +151,7 @@ export function LogsSection() {
                           log.status === "SUCCESS" ? "status-badge success" : "status-badge error"
                         }
                       >
-                        {log.status}
+                        {log.status === "SUCCESS" ? "Exitoso" : "Error"}
                       </span>
                     </td>
                     <td className="request-id-cell">{log.requestId}</td>
@@ -194,4 +197,42 @@ function formatDate(timestamp: string) {
   }
 
   return date.toLocaleString("es-CO");
+}
+
+function translateService(serviceId: string) {
+  switch (serviceId) {
+    case "inventory":
+      return "Inventario";
+    case "orders":
+      return "Pedidos";
+    case "payments":
+      return "Pagos";
+    default:
+      return serviceId;
+  }
+}
+
+function translateOperation(operation: string) {
+  switch (operation) {
+    case "checkStock":
+      return "Consultar stock";
+    case "addStock":
+      return "Agregar existencias";
+    case "removeStock":
+      return "Descontar existencias";
+    case "createOrder":
+      return "Crear pedido";
+    case "getOrder":
+      return "Consultar pedido";
+    case "cancelOrder":
+      return "Cancelar pedido";
+    case "charge":
+      return "Registrar cobro";
+    case "status":
+      return "Consultar estado";
+    case "refund":
+      return "Reembolsar pago";
+    default:
+      return operation;
+  }
 }

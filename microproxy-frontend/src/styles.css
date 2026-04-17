@@ -407,3 +407,36 @@ select {
     grid-template-columns: 1fr;
   }
 }
+.result-card {
+  background: #0f172a;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #1e293b;
+}
+
+.result-card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid #1e293b;
+  background: #111827;
+}
+
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #1d4ed8;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.result-card pre {
+  margin: 0;
+  background: transparent;
+  color: #e2e8f0;
+  padding: 18px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.45;
+}
