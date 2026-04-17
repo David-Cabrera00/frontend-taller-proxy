@@ -42,8 +42,8 @@ export function OperationsSection() {
     <section className="panel">
       <div className="section-header">
         <div>
-          <h2>Operaciones de Microservicios</h2>
-          <p>Ejecuta acciones reales sobre inventory, orders y payments.</p>
+          <h2>Panel de operaciones</h2>
+        <p>Ejecuta acciones reales sobre inventario, pedidos y pagos.</p>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export function OperationsSection() {
           <h3>Inventory</h3>
 
           <div className="form-group">
-            <label>Product ID</label>
+            <label>Código del producto</label>
             <input
               value={inventoryProductId}
               onChange={(e) => setInventoryProductId(e.target.value)}
@@ -63,7 +63,7 @@ export function OperationsSection() {
           </div>
 
           <div className="form-group">
-            <label>Quantity</label>
+            <label>Cantidad</label>
             <input
               type="number"
               min="1"
@@ -84,7 +84,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "inventory-check" ? "Consultando..." : "Check Stock"}
+              {loadingAction === "inventory-check" ? "Consultando..." : "Consultar stock"}
             </button>
 
             <button
@@ -99,7 +99,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "inventory-add" ? "Agregando..." : "Add Stock"}
+              {loadingAction === "inventory-add" ? "Agregando..." : "Agregar existencias"}
             </button>
 
             <button
@@ -114,7 +114,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "inventory-remove" ? "Quitando..." : "Remove Stock"}
+              {loadingAction === "inventory-remove" ? "Descontando..." : "Descontar existencias"}
             </button>
           </div>
         </div>
@@ -123,7 +123,7 @@ export function OperationsSection() {
           <h3>Orders</h3>
 
           <div className="form-group">
-            <label>Customer</label>
+           <label>Cliente</label>
             <input
               value={orderCustomer}
               onChange={(e) => setOrderCustomer(e.target.value)}
@@ -132,7 +132,7 @@ export function OperationsSection() {
           </div>
 
           <div className="form-group">
-            <label>Total</label>
+            <label>Total del pedido</label>
             <input
               type="number"
               min="1"
@@ -143,7 +143,7 @@ export function OperationsSection() {
           </div>
 
           <div className="form-group">
-            <label>Order ID</label>
+            <label>Codigo del pedido</label>
             <input
               value={orderId}
               onChange={(e) => setOrderId(e.target.value)}
@@ -171,7 +171,7 @@ export function OperationsSection() {
                 })
               }
             >
-              {loadingAction === "order-create" ? "Creando..." : "Create Order"}
+              {loadingAction === "order-create" ? "Creando..." : "Crear pedido"}
             </button>
 
             <button
@@ -185,7 +185,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "order-get" ? "Consultando..." : "Get Order"}
+              {loadingAction === "order-get" ? "Consultando..." : "Consultar orden"}
             </button>
 
             <button
@@ -199,7 +199,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "order-cancel" ? "Cancelando..." : "Cancel Order"}
+              {loadingAction === "order-cancel" ? "Cancelando..." : "Cancelar pedido"}
             </button>
           </div>
         </div>
@@ -208,7 +208,7 @@ export function OperationsSection() {
           <h3>Payments</h3>
 
           <div className="form-group">
-            <label>Amount</label>
+            <label>Monto</label>
             <input
               type="number"
               min="1"
@@ -219,7 +219,7 @@ export function OperationsSection() {
           </div>
 
           <div className="form-group">
-            <label>Payment ID</label>
+            <label>Codigo del pago</label>
             <input
               value={paymentId}
               onChange={(e) => setPaymentId(e.target.value)}
@@ -246,7 +246,7 @@ export function OperationsSection() {
                 })
               }
             >
-              {loadingAction === "payment-charge" ? "Cobrando..." : "Charge"}
+              {loadingAction === "payment-charge" ? "Cobrando..." : "Registar cobro"}
             </button>
 
             <button
@@ -260,7 +260,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "payment-status" ? "Consultando..." : "Status"}
+              {loadingAction === "payment-status" ? "Consultando..." : "Consultar estado"}
             </button>
 
             <button
@@ -274,7 +274,7 @@ export function OperationsSection() {
                 )
               }
             >
-              {loadingAction === "payment-refund" ? "Reembolsando..." : "Refund"}
+              {loadingAction === "payment-refund" ? "Reembolsando..." : "Reembolsar pago"}
             </button>
           </div>
         </div>
@@ -287,7 +287,7 @@ export function OperationsSection() {
           <pre>{JSON.stringify(result, null, 2)}</pre>
         ) : (
           <div className="empty-box">
-            Aquí se mostrará la respuesta del backend cuando ejecutes una operación.
+           Aquí se mostrará la respuesta del sistema cuando ejecutes una operación.
           </div>
         )}
       </div>

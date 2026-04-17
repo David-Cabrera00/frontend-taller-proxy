@@ -72,7 +72,7 @@ export function LogsSection() {
       <div className="section-header">
         <div>
           <h2>Logs de Auditoría</h2>
-          <p>Registro de llamadas ejecutadas por los proxies de los microservicios.</p>
+          <p>Registro de llamadas ejecutadas por los microservicios.</p>
         </div>
 
         <button className="secondary-button" onClick={() => loadLogs(0, service, status)}>

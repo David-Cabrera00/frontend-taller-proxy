@@ -4,8 +4,8 @@ export default function App() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <h2>Microproxy</h2>
-        <p>Panel de monitoreo</p>
+        <h2>Centro de monitoreo</h2>
+        <p>Control de inventario, pedidos y pagos</p>
       </aside>
 
       <main className="main-content">

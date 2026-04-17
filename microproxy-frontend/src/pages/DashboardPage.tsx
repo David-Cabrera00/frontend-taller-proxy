@@ -50,7 +50,7 @@ export default function DashboardPage() {
       <div className="page-header">
         <div>
           <h1>Dashboard de Monitoreo</h1>
-          <p>Resumen general de los microservicios monitoreados por proxy.</p>
+          <p>Resumen general de los microservicios.</p>
         </div>
 
         <button className="primary-button" onClick={simulateLoad} disabled={simulating}>
