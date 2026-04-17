@@ -13,3 +13,24 @@ export interface ServiceSummary {
   errorRate: number;
   averageResponseTimeMs: number;
 }
+
+export interface AuditLog {
+  requestId: string;
+  serviceId: string;
+  operation: string;
+  durationMs: number;
+  status: "SUCCESS" | "ERROR";
+  timestamp: string;
+  inputParams: string;
+  responseBody: string | null;
+  errorMessage: string | null;
+}
+
+export interface PageResponse<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+}
